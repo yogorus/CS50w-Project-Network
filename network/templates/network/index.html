@@ -1,0 +1,17 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <div class="form-group mx-auto w-50">
+        <form action="" class='p-2'>
+            {% csrf_token %}
+            {% for field in post_form %}
+                <h5>{{ field.label }}</h5>
+                <div class="form-group">
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">New Post</button>
+        </form>
+    </div>
+    <hr>
+{% endblock %}
