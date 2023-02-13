@@ -1,10 +1,11 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post
 from .forms import NewPostForm
 
 
@@ -12,6 +13,30 @@ def index(request):
     return render(request, "network/index.html", {
         'post_form': NewPostForm
     })
+
+
+def new_post(request):
+    if request.method != "POST":
+        return JsonResponse({"message: something went wrong!"})
+
+    data = request.body
+    data = json.loads(data)
+    
+    # Get contents of post
+    body = data.get('body', '')
+    
+    new_post = Post(
+        author=request.user,
+        body=body.split()
+    )
+    if new_post.is_valid():
+        new_post.save()
+        return JsonResponse({"Message":"Post created successfully!"}, status=201)
+    
+    return JsonResponse({"Message":"something went wrong!"}, status=201)
+
+
+    
 
 
 def login_view(request):

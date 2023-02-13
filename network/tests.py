@@ -11,7 +11,7 @@ class NetworkTest(TestCase):
 
         post_1 = Post.objects.create(author=user_1, body='foo')
         post_2 = Post.objects.create(author=user_1, body='bar')
-        post_3 = Post.objects.create(author=user_2, body='foo')
+        post_3 = Post.objects.create(author=user_2, body='')
 
         like_1 = Like.objects.create(liker=user_1, post=post_1)
         like_2 = Like.objects.create(liker=user_2, post=post_1)
@@ -19,9 +19,6 @@ class NetworkTest(TestCase):
 
     def test_likes(self):
         """Test likes count"""
-        u1 = User.objects.filter(username='foo').first()
-        u2 = User.objects.filter(username='bar').first()
-        
         p1 = Post.objects.filter(id=1).first()
         p2 = Post.objects.filter(id=2).first()
         p3 = Post.objects.filter(id=3).first()
@@ -30,3 +27,11 @@ class NetworkTest(TestCase):
         self.assertEqual(p1.likes.count(), 2)
         self.assertEqual(p2.likes.count(), 1)
         self.assertEqual(p3.likes.count(), 0)
+
+    def test_post(self):
+        """Test post validation"""
+        post_2 = Post.objects.filter(id=2).first()
+        post_3 = Post.objects.filter(id=3).first()
+        
+        self.assertTrue(post_2.is_valid())
+        self.assertFalse(post_3.is_valid())

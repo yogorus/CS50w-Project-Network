@@ -11,6 +11,21 @@ class Post(models.Model):
     body = models.TextField(max_length=400)
     date = models.DateTimeField(auto_now_add=True)
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "body": self.body,
+            "date": self.date
+        }
+
+    def __str__(self) -> str:
+        return f"By {self.author} on {self.date}"
+    
+    def is_valid(self):
+        if self.body.split():
+            return True
+        return False
+
 
 class Like(models.Model):
     liker = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
