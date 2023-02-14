@@ -1,0 +1,36 @@
+{% extends 'network/layout.html' %}
+{% load static %}
+
+{% block script %}
+    <script>
+        var username = '{{ profile.username }}';
+    </script>
+    <script src="{% static 'network/newPost.js' %}"></script>
+    <script type='module' src="{% static 'network/profile.js' %}"></script>
+{% endblock script %}
+
+{% block body %}
+    <div class="card p-2">
+        <h2 class="card-title">{{ profile.username }}</h2>
+        <div class="justify-content-start">
+            <span class="font-weight-bold mr-2">Followers: </span>
+            <span class="font-weight-bold ml-2">Following: </span>
+        </div>
+    </div>
+    <hr>
+    {% if user.is_authenticated and user == profile %}
+    <div class="form-group mx-auto w-50">
+        <form id='new-post' class='p-2'>
+            {% csrf_token %}
+            {% for field in post_form %}
+                <h5>{{ field.label }}</h5>
+                <div class="form-group">
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">New Post</button>
+        </form>
+    </div>
+    {% endif %}
+    <div id="posts-view" class="container mx-auto w-50"></div>
+{% endblock body %}

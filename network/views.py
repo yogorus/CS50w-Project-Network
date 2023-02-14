@@ -2,9 +2,9 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 
 from .models import User, Post
 from .forms import NewPostForm
@@ -16,9 +16,22 @@ def index(request):
     })
 
 
+def profile(request, username):
+    profile = get_object_or_404(User, username=username)
+
+    return render(request, "network/profile.html", {
+        "profile": profile,
+        'post_form': NewPostForm
+    })
+
+
 def posts(request, section):
     if section == 'all':
         posts = Post.objects.all()
+    
+    else:
+        user = get_object_or_404(User, username=section)
+        posts = user.posts
     
     posts = posts.order_by('-date')
     # posts = [post.serialize() for post in posts]
@@ -26,10 +39,19 @@ def posts(request, section):
     posts_per_page = 2
     p = Paginator(posts, posts_per_page) 
 
-    return render(request, 'network/posts.html', {
+    try:
+        return render(request, 'network/posts.html', {
         "post_page": p.get_page(page),
         "section": section
     })
+    
+    # Return last page if page doesn't exists
+    except EmptyPage:
+        return render(request, 'network/posts.html', {
+        "post_page": p.get_page(p.num_pages),
+        "section": section
+    })
+
 
 
 def new_post(request):

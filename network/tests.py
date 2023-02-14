@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
 
 from .models import User, Post, Like
 
@@ -35,3 +36,26 @@ class NetworkTest(TestCase):
         
         self.assertTrue(post_2.is_valid())
         self.assertFalse(post_3.is_valid())
+    
+    def test_pages(self):
+        """Test page render"""
+
+        # Set up client
+        c = Client()
+        
+        # Get response
+        url_1 = reverse('posts', kwargs={'section': 'all'})
+        response_1 = c.get(url_1)
+
+        url_2 = reverse('posts', kwargs={'section': f'{User.objects.get(pk=1).username}'})
+        response_2 = c.get(url_2)
+
+        url_3 = reverse('posts', kwargs={'section': 'baz'})
+        response_3 = c.get(url_3)
+        
+        self.assertEqual(response_1.status_code, 200)
+        self.assertEqual(response_2.status_code, 200)
+        self.assertEqual(response_3.status_code, 404)
+        
+        
+        

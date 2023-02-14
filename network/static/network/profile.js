@@ -3,5 +3,5 @@ import {
 } from './posts.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    load_posts('all', '')
+    load_posts(username, '')
 })

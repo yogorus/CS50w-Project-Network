@@ -17,22 +17,24 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
-document.querySelector('#new-post').onsubmit = (e) => {
-    // e.preventDefault();
-    fetch('new_post', {
-        method: 'POST',
-        headers: {'X-CSRFToken': csrftoken},
-        body: JSON.stringify({
-            body: `${document.querySelector('#id_body').value}`
+if (document.querySelector('#new-post')) {
+    document.querySelector('#new-post').onsubmit = (e) => {
+        // e.preventDefault();
+        fetch('new_post', {
+            method: 'POST',
+            headers: {'X-CSRFToken': csrftoken},
+            body: JSON.stringify({
+                body: `${document.querySelector('#id_body').value}`
+            })
         })
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log(result),
-        document.querySelector('#id_body').value = '';
-    })
-
-    return false;
+        .then(response => response.json())
+        .then(result => {
+            console.log(result),
+            document.querySelector('#id_body').value = '';
+        })
+    
+        return false;
+    }
 }
 
 })

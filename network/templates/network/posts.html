@@ -3,7 +3,9 @@
 {% for post in post_page.object_list %}
     <div class="card mx-auto border-dark w-75 mb-3">
         <div class="card-header">
-            <h5 class="card-title">{{ post.author }}</h5>
+            <a href="{% url 'profile' username=post.author %}">
+                <h5>{{ post.author }}</h5>
+            </a>
         </div>
         <div class="card-body">
             <p class="card-text">{{ post.body }}</p>

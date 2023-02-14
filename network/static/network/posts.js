@@ -1,5 +1,6 @@
 export function load_posts(section, page) {
-    fetch(`posts/${section}${page}`)
+    var url = `http://127.0.0.1:8000/posts/${section}${page}`;
+    fetch(url)
     .then(response => response.text())
     .then(posts => {
         // console.log(posts);
@@ -30,25 +31,4 @@ export function load_posts(section, page) {
             });
         }
     })
-    // .then(() => {
-    //     const prevBtn = document.querySelector('#page-prev');
-    //     const nextBtn = document.querySelector('#page-next');
-    //     // console.log(prevBtn)
-    //     // console.log(nextBtn)
-        
-    //     // Add load posts function to page btns
-    //     if (!prevBtn === null) {
-    //         console.log(prevBtn)
-    //         const section = prevBtn.dataset.section;
-    //         const page = prevBtn.value
-    //         prevBtn.addEventListener('click', () => load_posts(section, page));
-    //     }
-    //     if (!nextBtn === null) {
-    //         console.log(nextBtn)
-    //         const section = nextBtn.dataset.section;
-    //         const page = nextBtn.dataset.page;
-    //         console.log(page)
-    //         nextBtn.addEventListener('click', () => load_posts(section, page));
-    //     }
-    // });
 }
