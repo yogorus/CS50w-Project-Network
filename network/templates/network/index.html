@@ -3,20 +3,24 @@
 
 {% block script %}
     <script src="{% static 'network/newPost.js' %}"></script>
+    <script type='module' src="{% static 'network/index.js' %}"></script>
 {% endblock %}
 
 {% block body %}
-    <div class="form-group mx-auto w-50">
-        <form id='new-post' class='p-2'>
-            {% csrf_token %}
-            {% for field in post_form %}
-                <h5>{{ field.label }}</h5>
-                <div class="form-group">
-                    {{ field }}
-                </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">New Post</button>
-        </form>
-    </div>
+    {% if user.is_authenticated %}
+        <div class="form-group mx-auto w-50">
+            <form id='new-post' class='p-2'>
+                {% csrf_token %}
+                {% for field in post_form %}
+                    <h5>{{ field.label }}</h5>
+                    <div class="form-group">
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">New Post</button>
+            </form>
+        </div>
+    {% endif %}
     <hr>
+    <div id="posts-view" class="container mx-auto w-50"></div>
 {% endblock %}

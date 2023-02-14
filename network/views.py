@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from .models import User, Post
 from .forms import NewPostForm
@@ -12,6 +13,22 @@ from .forms import NewPostForm
 def index(request):
     return render(request, "network/index.html", {
         'post_form': NewPostForm
+    })
+
+
+def posts(request, section):
+    if section == 'all':
+        posts = Post.objects.all()
+    
+    posts = posts.order_by('-date')
+    # posts = [post.serialize() for post in posts]
+    page = request.GET.get('page', 1) 
+    posts_per_page = 2
+    p = Paginator(posts, posts_per_page) 
+
+    return render(request, 'network/posts.html', {
+        "post_page": p.get_page(page),
+        "section": section
     })
 
 
