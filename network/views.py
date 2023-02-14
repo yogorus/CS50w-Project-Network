@@ -29,6 +29,7 @@ def posts(request, section):
     if section == 'all':
         posts = Post.objects.all()
     
+    # Query username
     else:
         user = get_object_or_404(User, username=section)
         posts = user.posts
@@ -39,6 +40,7 @@ def posts(request, section):
     posts_per_page = 2
     p = Paginator(posts, posts_per_page) 
 
+    # Return template via fetch
     try:
         return render(request, 'network/posts.html', {
         "post_page": p.get_page(page),
