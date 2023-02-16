@@ -1,0 +1,14 @@
+{% extends 'network/layout.html' %}
+{% load static %}
+
+{% block script %}
+    <script>
+        var section = 'following';
+    </script>
+    <script type='module' src="{% static 'network/following.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <hr>
+    <div id="posts-view" class="container mx-auto w-50"></div>
+{% endblock %}

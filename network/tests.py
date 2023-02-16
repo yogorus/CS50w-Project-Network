@@ -18,6 +18,8 @@ class NetworkTest(TestCase):
         like_2 = Like.objects.create(liker=user_2, post=post_1)
         like_3 = Like.objects.create(liker=user_2, post=post_2)
 
+        user_1.followers.add(user_2)
+
     def test_likes(self):
         """Test likes count"""
         p1 = Post.objects.filter(id=1).first()
@@ -56,6 +58,15 @@ class NetworkTest(TestCase):
         self.assertEqual(response_1.status_code, 200)
         self.assertEqual(response_2.status_code, 200)
         self.assertEqual(response_3.status_code, 404)
+    
+    
+    def test_follow(self):
+        """Test follow"""
+        u1 = User.objects.get(pk=1)
+        u2 = User.objects.get(pk=2)
         
+        self.assertEqual(u1.followers.count(), 1)
+        self.assertEqual(u2.following.count(), 1)
+        self.assertEqual(u2.followers.count(), 0)
         
         

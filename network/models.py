@@ -3,7 +3,14 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    following = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='followers')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "username": self.username
+        }
+
 
 
 class Post(models.Model):
@@ -23,7 +30,7 @@ class Post(models.Model):
         return f"By {self.author} on {self.date}"
     
     def is_valid(self):
-        if self.body.split():
+        if self.body.strip():
             return True
         return False
 

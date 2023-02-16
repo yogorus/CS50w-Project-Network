@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -19,15 +20,58 @@ def index(request):
 def profile(request, username):
     profile = get_object_or_404(User, username=username)
 
+    # Check if request user follows that profile
+    user_is_follower = 1 if request.user in profile.followers.all() else 0
+
     return render(request, "network/profile.html", {
         "profile": profile,
-        'post_form': NewPostForm
+        'post_form': NewPostForm,
+        "user_is_follower": user_is_follower,
+        "followers": profile.followers.count(),
+        "following": profile.following.count()
     })
+
+
+@login_required
+def following_view(request):
+    return render(request, "network/following.html")
+
+
+@login_required
+def follow(request, username):
+    
+    # data = json.loads(request.body)
+    # Get user who does the request and the profile he wants to follow
+    user = get_object_or_404(User, pk=request.user.id)
+    profile = get_object_or_404(User, username=username)
+    
+    # Prevent user from following himself
+    if user == profile:
+        return JsonResponse({'message': "You can't follow yourself! That's weird..."})
+
+    if request.method == 'POST':
+        # Add that profile to the accounts that this user follows
+        user.following.add(profile)
+        
+        return JsonResponse({'message': 'Success in following!'})
+    
+    elif request.method == 'DELETE':
+        # Make the user to unfollow that account
+        user.following.remove(profile)
+
+        return JsonResponse({'message': 'Success in unfollowing!'})
+
+    else:
+        return JsonResponse({'message': 'Wrong method!'})
 
 
 def posts(request, section):
     if section == 'all':
         posts = Post.objects.all()
+    
+    elif section == 'following':
+        users = get_object_or_404(User, pk=request.user.id).following.all()
+        posts = Post.objects.filter(author__in=users)
     
     # Query username
     else:
@@ -37,7 +81,7 @@ def posts(request, section):
     posts = posts.order_by('-date')
     # posts = [post.serialize() for post in posts]
     page = request.GET.get('page', 1) 
-    posts_per_page = 2
+    posts_per_page = 10
     p = Paginator(posts, posts_per_page) 
 
     # Return template via fetch
@@ -68,7 +112,7 @@ def new_post(request):
     
     new_post = Post(
         author=request.user,
-        body=body.split()
+        body=body.strip()
     )
     if new_post.is_valid():
         new_post.save()

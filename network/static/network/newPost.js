@@ -1,26 +1,15 @@
+import { load_posts } from "./posts.js";
+
 document.addEventListener('DOMContentLoaded', () => {
 
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-const csrftoken = getCookie('csrftoken');
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 if (document.querySelector('#new-post')) {
+    document.querySelector('#id_body').value = '';
+    
     document.querySelector('#new-post').onsubmit = (e) => {
-        // e.preventDefault();
-        fetch('new_post', {
+        e.preventDefault();
+        fetch('http://127.0.0.1:8000/new_post', {
             method: 'POST',
             headers: {'X-CSRFToken': csrftoken},
             body: JSON.stringify({
@@ -31,6 +20,7 @@ if (document.querySelector('#new-post')) {
         .then(result => {
             console.log(result),
             document.querySelector('#id_body').value = '';
+            load_posts(section, '')
         })
     
         return false;

@@ -2,7 +2,10 @@
 {% load static %}
 
 {% block script %}
-    <script src="{% static 'network/newPost.js' %}"></script>
+    <script>
+        var section = 'all';
+    </script>
+    <script type='module' src="{% static 'network/newPost.js' %}"></script>
     <script type='module' src="{% static 'network/index.js' %}"></script>
 {% endblock %}
 
