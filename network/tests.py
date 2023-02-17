@@ -39,6 +39,26 @@ class NetworkTest(TestCase):
         self.assertTrue(post_2.is_valid())
         self.assertFalse(post_3.is_valid())
     
+    def test_edit(self):
+        """Test post validation if values are edited"""
+        post_1 = Post.objects.get(pk=1)
+        post_3 = Post.objects.get(pk=3)
+        
+        self.assertTrue(post_1.is_valid())
+        self.assertFalse(post_3.is_valid())
+        
+        post_1.body = ''
+        post_3.body = 'foo'
+
+        self.assertFalse(post_1.is_valid())
+        self.assertTrue(post_3.is_valid())
+        
+        post_1.save()
+        post_3.save()
+        
+        self.assertFalse(post_1.is_valid())
+        self.assertTrue(post_3.is_valid())
+
     def test_pages(self):
         """Test page render"""
 

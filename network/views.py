@@ -116,12 +116,32 @@ def new_post(request):
     )
     if new_post.is_valid():
         new_post.save()
-        return JsonResponse({"Message":"Post created successfully!"}, status=201)
+        return JsonResponse({"message":"Post created successfully!"}, status=201)
     
-    return JsonResponse({"Message":"something went wrong!"}, status=201)
+    return JsonResponse({"message":"something went wrong!"}, status=201)
 
 
+def edit_post(request, post_id):
+    if request.method != 'PUT':
+        return JsonResponse({'message': 'This route only accepts PUT requests!'})
     
+    else:
+        post = get_object_or_404(Post, pk=post_id)
+        
+        if post.author != request.user:
+            return JsonResponse({'message': "You can't edit someone else's post!"})
+
+        data = request.body
+        data = json.loads(data)
+
+        post.body = data.get('body', '')
+        
+        if post.is_valid():
+            post.save()
+            return JsonResponse({'message': 'Post edited succesfully!', 'status': 1})
+        
+        else:
+            return JsonResponse({'message': 'Invalid post!', 'status': 0})
 
 
 def login_view(request):

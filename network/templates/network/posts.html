@@ -1,15 +1,23 @@
 {% load static %}
 
 {% for post in post_page.object_list %}
-    <div class="card mx-auto border-dark w-75 mb-3">
+    <div id='post-{{post.id}}' class="card mx-auto border-dark w-75 mb-3">
         <div class="card-header">
             <a href="{% url 'profile' username=post.author %}">
                 <h5>{{ post.author }}</h5>
             </a>
         </div>
         <div class="card-body">
-            <p class="card-text">{{ post.body }}</p>
+            <p id='content' class="card-text">{{ post.body }}</p>
             <h6 class="card-subtitle text-muted">{{ post.date }}</h6>
+            {% if user.is_authenticated and user == post.author %}
+                <div id='edit-div' class="d-flex justify-content-end">
+                    <button id="save-btn" class="btn btn-outline-success btn-sm m-1">Save</button>
+                    <button id="cancel-btn" class="btn btn-outline-danger btn-sm m-1">Cancel</button>
+                    <button id="edit-btn" data-id={{post.id}} class="btn btn-outline-secondary btn-sm m-1">Edit</button>
+                    {% csrf_token %}
+                </div>
+            {% endif %}
         </div>    
     </div>
 {% endfor %}

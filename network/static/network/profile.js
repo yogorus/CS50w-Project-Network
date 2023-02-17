@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (followBtn) {
         if (userIsFollower) {
             followBtn.innerHTML = 'Unfollow';
-            followBtn.onclick= unfollow;
+            followBtn.onclick = unfollow;
         }
         else {
             followBtn.innerHTML = 'Follow';
