@@ -28,30 +28,32 @@ export function load_posts(section, page) {
         saveBtns.forEach(e => e.style.display = 'none')
         cancelBtns.forEach(e => e.style.display = 'none')
 
-        const prevBtn = document.querySelector('#page-prev');
+        const prevBtns = document.querySelectorAll('#page-prev');
         const curBtn = document.querySelector('#page-current');
-        const nextBtn = document.querySelector('#page-next');
+        const nextBtns = document.querySelectorAll('#page-next');
         
         // I don't want '#' appear in the url
         curBtn.addEventListener('click', e => e.preventDefault())
         
         // Add load_posts function to page buttons via recursion
-        if (prevBtn) {
-            // console.log(prevBtn)
-            const section = prevBtn.dataset.section;
-            const page = `?page=${prevBtn.dataset.page}`;
-            prevBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                load_posts(section, page);
+        if (prevBtns) {
+            prevBtns.forEach(e => {
+                const section = e.dataset.section;
+                const page = `?page=${e.dataset.page}`;
+                e.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    load_posts(section, page);
+                })
             });
         }
-        if (nextBtn) {
-            // console.log(nextBtn)
-            const section = nextBtn.dataset.section;
-            const page = `?page=${nextBtn.dataset.page}`;
-            nextBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                load_posts(section, page);
+        if (nextBtns) {
+            nextBtns.forEach(e => {
+                const section = e.dataset.section;
+                const page = `?page=${e.dataset.page}`;
+                e.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    load_posts(section, page);
+                })
             });
         }
     });

@@ -40,6 +40,12 @@
 <ul class="pagination">
     {% if post_page.has_previous %}
         <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous" id='page-prev' data-section={{ section }} data-page={{ post_page.previous_page_number }}>
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item">
             <a href='#' name='page' id='page-prev' data-section={{ section }} data-page={{ post_page.previous_page_number }} class='page-link'>{{ post_page.previous_page_number }}</a>
         </li>
     {% endif %}
@@ -48,5 +54,11 @@
         <li class="page-item">
             <a href='#' name='page' id='page-next' data-section={{ section }} data-page={{ post_page.next_page_number }} class='page-link'>{{ post_page.next_page_number }}</a>
         </li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next" name='page' id='page-next' data-section={{ section }} data-page={{ post_page.next_page_number }}>
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
     {% endif %}
 </ul>
