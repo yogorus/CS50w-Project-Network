@@ -100,7 +100,7 @@ def posts(request, section):
 
 def new_post(request):
     if request.method != "POST":
-        return JsonResponse({"message: something went wrong!"})
+        return JsonResponse({"message: this route accepts only POST requests!"})
 
     data = request.body
     data = json.loads(data)
@@ -116,7 +116,7 @@ def new_post(request):
         new_post.save()
         return JsonResponse({"message":"Post created successfully!"}, status=201)
     
-    return JsonResponse({"message":"something went wrong!"}, status=201)
+    return JsonResponse({"message":"something went wrong!"})
 
 
 def edit_post(request, post_id):
