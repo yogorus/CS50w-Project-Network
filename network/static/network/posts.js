@@ -158,5 +158,4 @@ async function like_post() {
 
     // Update likes
     likeCount.innerHTML = response.likes;
-
 }

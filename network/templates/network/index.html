@@ -11,6 +11,7 @@
 
 {% block body %}
     {% if user.is_authenticated %}
+    <div class="card w-75 mx-auto bg-light m-2">
         <div class="form-group mx-auto w-50">
             <form id='new-post' class='p-2'>
                 {% csrf_token %}
@@ -20,9 +21,10 @@
                         {{ field }}
                     </div>
                 {% endfor %}
-                <button type="submit" class="btn btn-primary">New Post</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
+    </div>
     {% endif %}
     <hr>
     <div id="posts-view" class="container mx-auto w-50"></div>
