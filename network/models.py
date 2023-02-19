@@ -12,7 +12,6 @@ class User(AbstractUser):
         }
 
 
-
 class Post(models.Model):
     author = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
     body = models.TextField(max_length=400)
@@ -33,6 +32,9 @@ class Post(models.Model):
         if self.body.strip():
             return True
         return False
+
+    def likes_count(self):
+        return self.likes.count()
 
 
 class Like(models.Model):

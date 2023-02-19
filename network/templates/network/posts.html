@@ -9,15 +9,30 @@
         </div>
         <div class="card-body">
             <p id='content' class="card-text">{{ post.body }}</p>
-            <h6 class="card-subtitle text-muted">{{ post.date }}</h6>
-            {% if user.is_authenticated and user == post.author %}
-                <div id='edit-div' class="d-flex justify-content-end">
-                    <button id="save-btn" class="btn btn-outline-success btn-sm m-1">Save</button>
-                    <button id="cancel-btn" class="btn btn-outline-danger btn-sm m-1">Cancel</button>
-                    <button id="edit-btn" data-id={{post.id}} class="btn btn-outline-secondary btn-sm m-1">Edit</button>
-                    {% csrf_token %}
+            <div class="row">
+                <div class="d-flex align-items-start flex-column ml-1">
+                    <h6 class="card-subtitle text-muted mt-1 mr-auto">{{ post.date }}</h6>
+                    <div id="like-div" data-id={{post.id}}>
+                        <h6 class="card-subtitle mt-1">
+                            <span class='font-weight-bold mr-1'>Likes:</span>
+                            <span id="like-count" data-id={{post.id}}></span>
+                        </h6>
+                        {% if user.is_authenticated %}
+                            <button id="like-btn" data-id={{post.id}} class="btn btn-outline-success btn-sm active">
+                                <i class="fa fa-thumbs-up"></i>
+                            </button>
+                        {% endif %}
+                    </div>
                 </div>
-            {% endif %}
+                {% if user.is_authenticated and user == post.author %}
+                    <div id='edit-div' class="d-flex align-items-end ml-auto">
+                        <button id="save-btn" class="btn btn-outline-success btn-sm m-1">Save</button>
+                        <button id="cancel-btn" class="btn btn-outline-danger btn-sm m-1">Cancel</button>
+                        <button id="edit-btn" data-id={{post.id}} class="btn btn-outline-secondary btn-sm m-1">Edit</button>
+                        {% csrf_token %}
+                    </div>
+                {% endif %}
+            </div>
         </div>    
     </div>
 {% endfor %}

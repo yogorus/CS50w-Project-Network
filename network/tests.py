@@ -27,9 +27,9 @@ class NetworkTest(TestCase):
         p3 = Post.objects.filter(id=3).first()
         
 
-        self.assertEqual(p1.likes.count(), 2)
-        self.assertEqual(p2.likes.count(), 1)
-        self.assertEqual(p3.likes.count(), 0)
+        self.assertEqual(p1.likes_count(), 2)
+        self.assertEqual(p2.likes_count(), 1)
+        self.assertEqual(p3.likes_count(), 0)
 
     def test_post(self):
         """Test post validation"""
