@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-const url = `http://127.0.0.1:8000/profile/${section}/follow`;
+const url = `/profile/${section}/follow`;
 let followers = parseInt(document.querySelector('#followers').innerHTML);
 
 function follow() {

@@ -9,7 +9,7 @@ if (document.querySelector('#new-post')) {
     
     document.querySelector('#new-post').onsubmit = (e) => {
         e.preventDefault();
-        fetch('http://127.0.0.1:8000/new_post', {
+        fetch('/new_post', {
             method: 'POST',
             headers: {'X-CSRFToken': csrftoken},
             body: JSON.stringify({

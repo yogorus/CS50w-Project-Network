@@ -100,7 +100,7 @@ def posts(request, section):
 
 def new_post(request):
     if request.method != "POST":
-        return JsonResponse({"message: this route accepts only POST requests!"})
+        return JsonResponse({"message": "this route accepts only POST requests!"})
 
     data = request.body
     data = json.loads(data)

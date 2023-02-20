@@ -1,5 +1,5 @@
 export function load_posts(section, page) {
-    var url = `http://127.0.0.1:8000/posts/${section}${page}`;  // Have to be explicit for some reason, otherwise url gets messy
+    var url = `/posts/${section}${page}`;  // http://127.0.0.1:8000/ Add this part in the url if you're not running this through docker
     fetch(url)
     .then(response => response.text())
     .then(posts => {
@@ -101,7 +101,7 @@ function edit() {
 
     // Make request to server to change post entry in the database
     saveBtn.onclick = async () => {
-        const url = `http://127.0.0.1:8000/edit/${id}`;
+        const url = `/edit/${id}`;
         let response = await fetch(url, {
             method: 'PUT',
             headers: {'X-CSRFToken': csrftoken},
@@ -127,7 +127,7 @@ function edit() {
 }
 
 async function get_likes(id) {
-    const url = `http://127.0.0.1:8000/like/${id}`;
+    const url = `/like/${id}`;
     
     let response = await fetch(url, {
         method: 'GET'
@@ -139,7 +139,7 @@ async function get_likes(id) {
 
 async function like_post() {
     const id = this.dataset.id;
-    const url = `http://127.0.0.1:8000/like/${id}`;
+    const url = `/like/${id}`;
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     // Like or unlike post
